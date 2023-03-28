@@ -4,7 +4,8 @@
   "description": "Building a Blog using Node and ExpressJs",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon --ignore feedback.json server.js"
   },
   "keywords": [],
   "author": "Jelili Adesina",
