@@ -1,0 +1,14 @@
+{
+  "name": "zen-blog",
+  "version": "1.0.0",
+  "description": "Building a Blog using Node and ExpressJs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Jelili Adesina",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
