@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
+const bodyParser = require('body-parser');
 const routes = require('./routes');
 // const config = require('./config')[process.env.NODE_ENV || 'development'];
 // const db = require('./lib/db');
@@ -24,7 +25,8 @@ module.exports = (config) => {
   app.locals.title = config.sitename;
   app.locals.siteName = 'ZenBlog';
 
-  app.use(express.static(path.join(__dirname, '../public')));
+  app.use('/', express.static(path.join(__dirname, '../public')));
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use('/', routes());
 

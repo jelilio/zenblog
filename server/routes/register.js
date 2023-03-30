@@ -1,5 +1,5 @@
 const express = require('express');
-const UserModule = require('../models/UserModel');
+const UserModel = require('../models/UserModel');
 
 const router = express.Router();
 
@@ -10,9 +10,9 @@ module.exports = () => {
 
   router.post('/', async (req, res, next) => {
     try {
-      const user = new UserModule({
-        username: req.body.name,
-        eamil: req.body.email,
+      const user = new UserModel({
+        name: req.body.name,
+        email: req.body.email,
         password: req.body.password,
       });
       const savedUser = await user.save();

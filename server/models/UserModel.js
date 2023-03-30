@@ -6,7 +6,7 @@ const SALT_ROUNDS = 12;
 
 const UserSchema = mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -44,6 +44,7 @@ UserSchema.pre('save', async function preSave(next) {
   try {
     const hash = await bcrypt.hash(user.password, SALT_ROUNDS);
     user.password = hash;
+    return next();
   } catch (err) {
     return next(err);
   }
