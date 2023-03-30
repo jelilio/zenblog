@@ -6,14 +6,14 @@ const registerRoute = require('./register');
 
 const router = express.Router();
 
-module.exports = () => {
+module.exports = (params) => {
   router.get('/', (request, response) => {
     response.render('layout', { pageTitle: 'Welcome', template: 'index' });
   });
 
   router.use('/about', aboutRoute());
   router.use('/contact', contactRoute());
-  router.use('/register', registerRoute());
+  router.use('/register', registerRoute(params));
 
   return router;
 };

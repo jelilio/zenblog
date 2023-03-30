@@ -23,9 +23,18 @@
               <div class="login-wrap">
                 <div class="img" style="background-image: url(images/bg.jpg)"></div>
                 <h3 class="text-center mb-4">Sign Up</h3>
+                <% if(typeof errMessage != 'undefined') { %>
+                <div class="alert alert-danger" role="alert"><%= errMessage %></div>
+                <% } %>
                 <form action="" method="post" class="signup-form">
                   <div class="form-group mb-3">
-                    <input type="text" class="form-control" name="name" placeholder="John Doe" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="name"
+                      placeholder="John Doe"
+                      required
+                    />
                   </div>
                   <div class="form-group mb-3">
                     <input
@@ -33,6 +42,7 @@
                       class="form-control"
                       name="email"
                       placeholder="johndoe@gmail.com"
+                      required
                     />
                   </div>
                   <div class="form-group mb-3">
@@ -42,6 +52,7 @@
                       class="form-control"
                       name="password"
                       placeholder="Password"
+                      required
                     />
                     <span
                       toggle="#password-field"

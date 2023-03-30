@@ -6,8 +6,11 @@ const routes = require('./routes');
 // const config = require('./config')[process.env.NODE_ENV || 'development'];
 // const db = require('./lib/db');
 
+const UserService = require('./services/UserService');
+
 module.exports = (config) => {
   const app = express();
+  const userService = new UserService();
   // const port = 3001;
 
   app.set('trust proxy', 1);
@@ -28,7 +31,7 @@ module.exports = (config) => {
   app.use('/', express.static(path.join(__dirname, '../public')));
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.use('/', routes());
+  app.use('/', routes({ userService }));
 
   // app.get('/', (request, response) => {
   //   response.render('pages/index', { pageTitle: 'Welcome' });
