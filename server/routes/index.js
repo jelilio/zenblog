@@ -3,6 +3,7 @@ const express = require('express');
 const aboutRoute = require('./about');
 const contactRoute = require('./contact');
 const registerRoute = require('./register');
+const loginRoute = require('./login');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ module.exports = (params) => {
   router.use('/about', aboutRoute());
   router.use('/contact', contactRoute());
   router.use('/register', registerRoute(params));
+  router.use('/login', loginRoute(params));
 
   return router;
 };
