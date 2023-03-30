@@ -7,6 +7,7 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
+const auth = require('./lib/auth');
 // const config = require('./config')[process.env.NODE_ENV || 'development'];
 // const db = require('./lib/db');
 
@@ -44,6 +45,10 @@ module.exports = (config) => {
       store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
   );
+
+  app.use(auth.initialize);
+  app.use(auth.session);
+  app.use(auth.setUser);
 
   app.use('/', routes({ userService }));
 
