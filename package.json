@@ -2,10 +2,10 @@
   "name": "zen-blog",
   "version": "1.0.0",
   "description": "Building a Blog using Node and ExpressJs",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon --ignore feedback.json server.js"
+    "start": "node bin/www",
+    "dev": "nodemon --ignore feedback.json bin/www"
   },
   "keywords": [],
   "author": "Jelili Adesina",
@@ -21,7 +21,9 @@
   },
   "dependencies": {
     "cookie-session": "^2.0.0",
+    "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^5.4.0"
   }
 }
