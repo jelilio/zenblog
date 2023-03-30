@@ -1,4 +1,8 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
@@ -30,6 +34,16 @@ module.exports = (config) => {
 
   app.use('/', express.static(path.join(__dirname, '../public')));
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(cookieParser());
+
+  app.use(
+    session({
+      secret: 'a very random string 1234',
+      resave: true,
+      saveUninitialized: false,
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    })
+  );
 
   app.use('/', routes({ userService }));
 
