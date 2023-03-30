@@ -20,6 +20,9 @@
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card">
             <div class="card-body py-5 px-md-5">
+              <% if(success) { %>
+              <div class="alert alert-success" role="alert">Thank you for your registration!</div>
+              <% } else { %>
               <div class="login-wrap">
                 <div class="img" style="background-image: url(images/bg.jpg)"></div>
                 <h3 class="text-center mb-4">Sign Up</h3>
@@ -32,6 +35,7 @@
                       type="text"
                       class="form-control"
                       name="name"
+                      value="<%= formData.name %>"
                       placeholder="John Doe"
                       required
                     />
@@ -41,6 +45,7 @@
                       type="text"
                       class="form-control"
                       name="email"
+                      value="<%= formData.email %>"
                       placeholder="johndoe@gmail.com"
                       required
                     />
@@ -66,6 +71,7 @@
                   </div>
                 </form>
               </div>
+              <% } %>
             </div>
           </div>
         </div>

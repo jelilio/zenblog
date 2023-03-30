@@ -3,13 +3,14 @@ const express = require('express');
 
 const router = express.Router();
 
-const renderDefault = (request, response, errMessage) => {
-  response.render('layout', { pageTitle: 'Register', template: 'register', errMessage });
-};
-
 module.exports = ({ userService }) => {
   router.get('/', (request, response) => {
-    response.render('layout', { pageTitle: 'Register', template: 'register' });
+    response.render('layout', {
+      pageTitle: 'Register',
+      template: 'register',
+      success: request.query.success,
+      formData: {},
+    });
   });
 
   router.post('/', async (req, res, next) => {
@@ -23,8 +24,13 @@ module.exports = ({ userService }) => {
 
       return next(new Error('Failed to saved used'));
     } catch (err) {
-      console.log(err.message);
-      return renderDefault(req, res, err.message);
+      return res.render('layout', {
+        pageTitle: 'Register',
+        template: 'register',
+        errMessage: err.message,
+        success: false,
+        formData: req.body,
+      });
     }
   });
 
