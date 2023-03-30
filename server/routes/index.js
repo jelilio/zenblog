@@ -2,6 +2,7 @@ const express = require('express');
 
 const aboutRoute = require('./about');
 const contactRoute = require('./contact');
+const registerRoute = require('./register');
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ module.exports = () => {
 
   router.use('/about', aboutRoute());
   router.use('/contact', contactRoute());
+  router.use('/register', registerRoute());
 
   return router;
 };
