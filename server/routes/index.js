@@ -17,5 +17,10 @@ module.exports = (params) => {
   router.use('/register', registerRoute(params));
   router.use('/login', loginRoute(params));
 
+  router.get('/logout', (req, res) => {
+    req.logOut();
+    return res.redirect('/');
+  });
+
   return router;
 };

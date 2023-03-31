@@ -60,8 +60,9 @@
       </div>
       <!-- End Search Form -->
     </div>
+
     <% if(typeof user != 'undefined') { %>
-    <div class="nav-item dropdown pe-3">
+    <div class="position-relative nav-item dropdown pe-3">
       <a
         class="nav-link nav-profile d-flex align-items-center pe-0"
         href="#"
@@ -83,7 +84,7 @@
           <hr class="dropdown-divider" />
         </li>
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="#">
+          <a class="dropdown-item d-flex align-items-center" href="/logout">
             <i class="bi bi-box-arrow-right"></i>
             <span>Sign Out</span>
           </a>
@@ -91,6 +92,8 @@
       </ul>
       <!-- End Profile Dropdown Items -->
     </div>
+    <% } else { %>
+    <div><a href="/register">Register</a> | <a href="/login">Login</a></div>
     <% } %>
   </div>
 </header>
