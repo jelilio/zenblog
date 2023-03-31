@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -7,27 +8,18 @@ module.exports = ({ userService }) => {
     response.render('layout', {
       pageTitle: 'Login',
       template: 'login',
-      success: request.query.success,
+      error: request.query.error,
       formData: {},
     });
   });
 
-  router.post('/', async (req, res, next) => {
-    try {
-      const savedUser = await userService.register(req.body.email, req.body.password);
-      if (savedUser) return res.redirect('/success=true');
-
-      return next(new Error('Failed to saved used'));
-    } catch (err) {
-      return res.render('layout', {
-        pageTitle: 'Login',
-        template: 'login',
-        errMessage: err.message,
-        success: false,
-        formData: req.body,
-      });
-    }
-  });
+  router.post(
+    '/',
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/login?error=true',
+    })
+  );
 
   return router;
 };
