@@ -13,6 +13,22 @@ const renderRegister = (req, res, next, success, errMessage) =>
   });
 
 module.exports = ({ userService }) => {
+  router.get('/', (request, response) => response.redirect('/users/login'));
+
+  router.get(
+    '/profile',
+    (req, res, next) => {
+      if (req.user) return next();
+      return res.status(403).end();
+    },
+    (req, res) =>
+      res.render('layout', {
+        pageTitle: 'Login',
+        template: 'users/profile',
+        user: req.user,
+      })
+  );
+
   router.get('/login', (request, response) => {
     response.render('layout', {
       pageTitle: 'Login',
