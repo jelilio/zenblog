@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const router = express.Router();
 
-module.exports = ({ userService }) => {
+module.exports = () => {
   router.get('/', (request, response) => {
     response.render('layout', {
       pageTitle: 'Login',

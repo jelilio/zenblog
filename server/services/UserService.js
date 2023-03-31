@@ -6,7 +6,7 @@ class UserService {
     if (await this.checkIfEmailExist(email)) {
       throw new Error(`User with the email: ${email}, already exist`);
     }
-    const user = new UserModel({ name, email, password });
+    const user = new UserModel({ name, email, password, roles: ['USER'] });
     return user.save();
   }
 

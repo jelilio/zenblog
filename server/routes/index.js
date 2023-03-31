@@ -22,5 +22,26 @@ module.exports = (params) => {
     return res.redirect('/');
   });
 
+  router.get(
+    '/profile',
+    (req, res, next) => {
+      if (req.user) return next();
+      return res.status(403).end();
+    },
+    (req, res) =>
+      res.render('layout', { pageTitle: 'Profile', template: 'profile', user: req.user })
+  );
+
+  router.get(
+    '/admin',
+    async (req, res, next) => {
+      if (req.user && req.user.roles.indexOf('ADMIN') >= 0) {
+        return next();
+      }
+      return res.status(403).end();
+    },
+    (req, res) => res.render('layout', { pageTitle: 'Admin', template: 'admin', user: req.user })
+  );
+
   return router;
 };

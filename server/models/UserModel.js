@@ -31,6 +31,10 @@ const UserSchema = mongoose.Schema(
       idnex: { unique: true },
       minlength: 8,
     },
+    roles: {
+      type: [String],
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -52,6 +56,10 @@ UserSchema.pre('save', async function preSave(next) {
 
 UserSchema.methods.comparePassword = async function comparePassword(candidate) {
   return bcrypt.compare(candidate, this.password);
+};
+
+UserSchema.methods.hasRole = async function hasRole(role) {
+  return this.roles.indexOf[role] >= 0;
 };
 
 module.exports = mongoose.model('User', UserSchema);
