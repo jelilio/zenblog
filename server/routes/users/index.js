@@ -129,5 +129,16 @@ module.exports = ({ userService, avatarService }) => {
     }
   });
 
+  router.get('/avatar/:filename', (req, res) => {
+    res.type('png');
+    return res.sendFile(avatarService.filepath(req.params.filename));
+  });
+
+  router.get('/avatartn/:filename', async (req, res) => {
+    res.type('png');
+    const tn = await avatarService.thumbnail(req.params.filename);
+    return res.end(tn, 'binary');
+  });
+
   return router;
 };
