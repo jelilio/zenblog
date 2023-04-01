@@ -31,6 +31,14 @@ const UserSchema = mongoose.Schema(
       idnex: { unique: true },
       minlength: 8,
     },
+    bio: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    avatar: {
+      type: String,
+    },
     roles: {
       type: [String],
       required: true,

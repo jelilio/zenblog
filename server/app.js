@@ -12,10 +12,12 @@ const auth = require('./lib/auth');
 // const db = require('./lib/db');
 
 const UserService = require('./services/UserService');
+const AvatarService = require('./services/AvatarService');
 
 module.exports = (config) => {
   const app = express();
   const userService = new UserService();
+  const avatarService = new AvatarService(config.data.avatars);
   // const port = 3001;
 
   app.set('trust proxy', 1);
@@ -51,7 +53,7 @@ module.exports = (config) => {
   app.use(auth.session);
   app.use(auth.setUser);
 
-  app.use('/', routes({ userService }));
+  app.use('/', routes({ userService, avatarService }));
 
   // app.get('/', (request, response) => {
   //   response.render('pages/index', { pageTitle: 'Welcome' });

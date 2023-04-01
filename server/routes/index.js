@@ -16,7 +16,7 @@ module.exports = (params) => {
   router.use('/users', usersRoute(params));
 
   router.get('/logout', (req, res) => {
-    req.logOut();
+    req.logOut(() => {});
     return res.redirect('/');
   });
 
