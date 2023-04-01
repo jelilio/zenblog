@@ -1,0 +1,39 @@
+<!-- #main -->
+<main id="main">
+  <section class="mb-5">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-lg-12 text-center mb-5">
+          <h1 class="page-title">Your Profile</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 border-right">
+          <div class="d-flex flex-column align-items-center text-center">
+            <% if(user.avatar) { %>
+            <img class="rounded-circle" width="150px" src="/users/avatar/<%= user.avatar %>" />
+            <% } else { %>
+            <img
+              class="rounded-circle"
+              width="150px"
+              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+            /><% } %> <span class="font-weight-bold"><%= user.name %></span
+            ><span class="text-black-50"><%= user.email %></span><span> </span>
+            <a type="button" href="/users/profile/edit" class="btn btn-primary btn-sm">Edit</a>
+          </div>
+        </div>
+        <div class="col-md-6 border-right">
+          <h4><%= user.name %></h4>
+          <span class="text-black-50"><%= user.email %></span>
+          <span class="d-block mb-3"
+            ><%= user.roles.join([separator = ', ']).toLowerCase().split(' ') .map((word) =>
+            word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %></span
+          >
+          <p><%= user.bio %></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
