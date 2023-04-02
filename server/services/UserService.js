@@ -12,6 +12,32 @@ class UserService {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  async create(name, email, password, roles) {
+    if (await this.checkIfEmailExist(email)) {
+      throw new Error(`User with the email: ${email}, already exist`);
+    }
+    const user = new UserModel({ name, email, password, roles });
+    return user.save();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async updateByAdmin(id, name, email, roles) {
+    if (await this.checkIfEmailExistButNotId(email, id)) {
+      throw new Error(`User with the email: ${email}, already exist`);
+    }
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.name = name;
+    user.email = email;
+    user.roles = roles;
+
+    return user.save();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   async update(id, name, email, bio, avatar) {
     if (await this.checkIfEmailExistButNotId(email, id)) {
       throw new Error(`User with the email: ${email}, already exist`);
@@ -27,6 +53,24 @@ class UserService {
     user.avatar = avatar;
 
     return user.save();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findAll() {
+    const result = await UserModel.find({}).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findOne(id) {
+    const result = await UserModel.findById({ _id: ObjectId(id) }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async deleteOne(id) {
+    const deleted = await UserModel.deleteOne({ _id: ObjectId(id) }).exec();
+    return deleted;
   }
 
   // eslint-disable-next-line class-methods-use-this

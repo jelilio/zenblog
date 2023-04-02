@@ -1,0 +1,43 @@
+<div>
+  <div class="page-header pt-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3">
+      <h2>Users</h2>
+      <div class="btn-toolbar mb-md-0">
+        <div id="add_new_object" class="btn-group mr-2 ml-2 add_new_object">
+          <a role="button" class="btn btn-outline-secondary" href="/admin/users/add">Add New</a>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Roles</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(function(usr, i){ %>
+      <tr>
+        <th scope="row"><%= i+1 %></th>
+        <td><%= usr.name %></td>
+        <td><%= usr.email %></td>
+        <td>
+          <%= usr.roles.join([separator = ', ']).toLowerCase().split(' ') .map((word) =>
+          word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+        </td>
+        <td>
+          <a href="/admin/users/<%= usr.id %>/edit">Edit</a>
+          <% if(user.id != usr.id) { %>
+          <a href="/admin/users/<%= usr.id %>/delete">Delete</a>
+          <% } %>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

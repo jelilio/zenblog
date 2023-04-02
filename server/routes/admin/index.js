@@ -1,6 +1,7 @@
 const express = require('express');
 
 const categoriesRoute = require('./category');
+const usersRoute = require('./user');
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ const restrictNonAdmin = async (req, res, next) => {
 
 module.exports = (params) => {
   router.use('/categories', restrictNonAdmin, categoriesRoute(params));
+  router.use('/users', restrictNonAdmin, usersRoute(params));
 
   router.get('/', (req, res) => res.redirect('/admin/posts'));
 
