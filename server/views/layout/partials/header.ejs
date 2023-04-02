@@ -97,6 +97,14 @@
             <span>My Profile</span>
           </a>
         </li>
+        <% if(user.roles.indexOf('ADMIN') >= 0) { %>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="/admin/categories">
+            <i class="bi bi-person"></i>
+            <span>Control Panel</span>
+          </a>
+        </li>
+        <% } %>
         <li>
           <hr class="dropdown-divider" />
         </li>

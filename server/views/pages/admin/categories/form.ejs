@@ -1,0 +1,36 @@
+<!-- #main -->
+<div>
+  <div class="page-header pt-3">
+    <h2><%= pageTitle %></h2>
+    <hr />
+  </div>
+  <% if(typeof errMessage != 'undefined') { %>
+  <div class="alert alert-danger" role="alert"><%= errMessage %></div>
+  <% } %>
+  <form action="" method="post" class="row">
+    <div class="col-12 mb-3">
+      <input
+        type="text"
+        name="name"
+        class="form-control"
+        value="<%= formData.name %>"
+        placeholder="Ente a name"
+      />
+    </div>
+    <div class="col-12 mb-3">
+      <textarea
+        class="form-control"
+        name="description"
+        placeholder="Enter a short description"
+        cols="30"
+        rows="5"
+      >
+<%= formData.description %></textarea
+      >
+    </div>
+    <div class="col-12">
+      <input type="submit" class="btn btn-primary" value="Submit" />
+    </div>
+  </form>
+</div>
+<!-- End #main -->

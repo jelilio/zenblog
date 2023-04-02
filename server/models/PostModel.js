@@ -8,6 +8,7 @@ const PostSchema = mongoose.Schema(
       trim: true,
       idnex: { unique: true },
       minlength: 3,
+      maxlength: 100,
     },
     subtitle: {
       type: String,
@@ -29,6 +30,9 @@ const PostSchema = mongoose.Schema(
       votes: Number,
       favs: Number,
     },
+    featureImage: {
+      type: String,
+    },
     comments: [
       {
         message: String,
@@ -43,8 +47,16 @@ const PostSchema = mongoose.Schema(
     hidden: Boolean,
     published: { type: Boolean, default: false },
     publishedDate: Date,
+    categories: {
+      type: [String],
+    },
+    tags: {
+      type: [String],
+    },
   },
   {
     timestamps: true,
   }
 );
+
+module.exports = mongoose.model('Post', PostSchema);

@@ -3,6 +3,7 @@ const express = require('express');
 const aboutRoute = require('./about');
 const contactRoute = require('./contact');
 const usersRoute = require('./users');
+const adminRoute = require('./admin');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ module.exports = (params) => {
   router.use('/about', aboutRoute());
   router.use('/contact', contactRoute());
   router.use('/users', usersRoute(params));
+  router.use('/admin', adminRoute(params));
 
   router.get('/logout', (req, res) => {
     req.logOut(() => {});
@@ -28,17 +30,6 @@ module.exports = (params) => {
     },
     (req, res) =>
       res.render('layout', { pageTitle: 'Profile', template: 'profile', user: req.user })
-  );
-
-  router.get(
-    '/admin',
-    async (req, res, next) => {
-      if (req.user && req.user.roles.indexOf('ADMIN') >= 0) {
-        return next();
-      }
-      return res.status(403).end();
-    },
-    (req, res) => res.render('layout', { pageTitle: 'Admin', template: 'admin', user: req.user })
   );
 
   return router;

@@ -13,11 +13,14 @@ const auth = require('./lib/auth');
 
 const UserService = require('./services/UserService');
 const AvatarService = require('./services/AvatarService');
+const CategoryService = require('./services/CategoryService');
 
 module.exports = (config) => {
   const app = express();
   const userService = new UserService();
   const avatarService = new AvatarService(config.data.avatars);
+  const categoryService = new CategoryService();
+
   // const port = 3001;
 
   app.set('trust proxy', 1);
@@ -53,7 +56,7 @@ module.exports = (config) => {
   app.use(auth.session);
   app.use(auth.setUser);
 
-  app.use('/', routes({ userService, avatarService }));
+  app.use('/', routes({ userService, avatarService, categoryService }));
 
   // app.get('/', (request, response) => {
   //   response.render('pages/index', { pageTitle: 'Welcome' });

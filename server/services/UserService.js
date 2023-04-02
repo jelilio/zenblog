@@ -14,16 +14,13 @@ class UserService {
   // eslint-disable-next-line class-methods-use-this
   async update(id, name, email, bio, avatar) {
     if (await this.checkIfEmailExistButNotId(email, id)) {
-      console.log('email already exist');
       throw new Error(`User with the email: ${email}, already exist`);
     }
     const user = await UserModel.findById(id);
     if (!user) {
-      console.log('user not found');
       throw new Error('User not found');
     }
 
-    console.log('about to update');
     user.name = name;
     user.email = email;
     user.bio = bio;
