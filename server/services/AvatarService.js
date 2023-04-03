@@ -24,6 +24,19 @@ class AvatarService {
     return filename;
   }
 
+  async storeFeatureImage(buffer) {
+    const filename = AvatarService.filename();
+    const filepath = this.filepath(filename);
+
+    await sharp(buffer)
+      .resize(1947, 843, {
+        fit: sharp.fit.inside,
+        withoutEnlargement: true,
+      })
+      .toFile(filepath);
+    return filename;
+  }
+
   async thumbnail(filename) {
     return sharp(this.filepath(filename)).resize(50, 50).toBuffer();
   }

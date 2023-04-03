@@ -8,6 +8,14 @@ const adminRoute = require('./admin');
 const router = express.Router();
 
 module.exports = (params) => {
+  const { categoryService } = params;
+
+  router.use('/', async (req, res, next) => {
+    const categories = await categoryService.findAll();
+    res.locals.headerCategories = categories;
+    return next();
+  });
+
   router.get('/', (request, response) => {
     response.render('layout', { pageTitle: 'Welcome', template: 'index' });
   });

@@ -16,3 +16,12 @@ module.exports.handleAvatar = (avatarService) => async (req, res, next) => {
   req.file.storedFilename = await avatarService.store(req.file.buffer);
   return next();
 };
+
+module.exports.handleFeatureImage = (avatarService) => async (req, res, next) => {
+  if (!req.file) return next();
+  if (req.file.mimetype !== 'image/png' && req.file.mimetype !== 'image/jpeg') {
+    return next(new Error('File format is not supported'));
+  }
+  req.file.storedFilename = await avatarService.storeFeatureImage(req.file.buffer);
+  return next();
+};

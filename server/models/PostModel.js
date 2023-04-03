@@ -10,6 +10,14 @@ const PostSchema = mongoose.Schema(
       minlength: 3,
       maxlength: 100,
     },
+    slug: {
+      type: String,
+      required: true,
+      trim: true,
+      idnex: { unique: true },
+      minlength: 3,
+      maxlength: 100,
+    },
     subtitle: {
       type: String,
       required: false,
@@ -32,6 +40,11 @@ const PostSchema = mongoose.Schema(
     },
     featureImage: {
       type: String,
+    },
+    featureImageCaption: {
+      type: String,
+      required: false,
+      trim: true,
     },
     comments: [
       {
