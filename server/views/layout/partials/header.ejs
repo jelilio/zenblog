@@ -11,7 +11,7 @@
     <nav id="navbar" class="navbar">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/blog">Blog</a></li>
+        <!-- <li><a href="/blog">Blog</a></li> -->
         <!-- <li><a href="single-post.html">Single Post</a></li> -->
         <li class="dropdown">
           <a href="#"
@@ -19,7 +19,7 @@
           ></a>
           <ul>
             <% headerCategories.forEach(function(category, i){ %>
-            <li><a href="#"><%= category.name %></a></li>
+            <li><a href="/blog/<%= category.slug %>"><%= category.name %></a></li>
             <% }); %>
           </ul>
         </li>

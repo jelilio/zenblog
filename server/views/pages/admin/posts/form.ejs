@@ -83,7 +83,7 @@
       <div class="col-sm-10">
         <select class="select" id="postCategories" name="categories" multiple>
           <% allCategries.forEach(function(category, i){ %>
-          <option value="<%= category.name %>" <% if(formData.categories.indexOf(category.name)>
+          <option value="<%= category.slug %>" <% if(formData.categories.indexOf(category.slug)>
             -1 ) { %> selected <% } %> > <%= category.name %>
           </option>
           <% }) %>

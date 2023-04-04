@@ -4,6 +4,8 @@ const aboutRoute = require('./about');
 const contactRoute = require('./contact');
 const usersRoute = require('./users');
 const adminRoute = require('./admin');
+const blogRoute = require('./blog');
+const postsRoute = require('./posts');
 
 const router = express.Router();
 
@@ -24,6 +26,8 @@ module.exports = (params) => {
   router.use('/contact', contactRoute());
   router.use('/users', usersRoute(params));
   router.use('/admin', adminRoute(params));
+  router.use('/blog', blogRoute(params));
+  router.use('/posts', postsRoute(params));
 
   router.get('/logout', (req, res) => {
     req.logOut(() => {});

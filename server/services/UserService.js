@@ -50,7 +50,9 @@ class UserService {
     user.name = name;
     user.email = email;
     user.bio = bio;
-    user.avatar = avatar;
+    if (avatar) {
+      user.avatar = avatar;
+    }
 
     return user.save();
   }

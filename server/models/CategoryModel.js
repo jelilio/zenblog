@@ -10,6 +10,12 @@ const CategorySchema = mongoose.Schema(
       minlength: 3,
       maxlength: 50,
     },
+    slug: {
+      type: String,
+      required: true,
+      idnex: { unique: true },
+      trim: true,
+    },
     description: {
       type: String,
       required: false,

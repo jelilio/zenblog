@@ -14,7 +14,9 @@ class PostService {
     categories,
     tags
   ) {
-    if (await this.checkIfTitleExist(title.trim())) {
+    const slug = title.replace(/[^A-Z0-9]+/gi, '-').toLowerCase();
+
+    if (await this.checkIfTitleExist(slug.trim())) {
       throw new Error(`Post with similar title: ${title}, already exist`);
     }
 
@@ -25,8 +27,6 @@ class PostService {
       published = true;
       publishedDate = Date.now;
     }
-
-    const slug = title.trim().replace(/\s+/g, '-').toLowerCase();
 
     const model = new PostModel({
       title,
@@ -57,7 +57,9 @@ class PostService {
     categories,
     tags
   ) {
-    if (await this.checkIfTitleExistButNotId(title, id)) {
+    const slug = title.replace(/[^A-Z0-9]+/gi, '-').toLowerCase();
+
+    if (await this.checkIfTitleExistButNotId(slug.trim(), id)) {
       throw new Error(`Post with similar title: ${title}, already exist`);
     }
 
@@ -74,8 +76,6 @@ class PostService {
     if (featureImage) {
       post.featureImage = featureImage;
     }
-
-    const slug = title.replace(/\s+/g, '-').toLowerCase();
 
     post.title = title;
     post.slug = slug;
@@ -96,8 +96,21 @@ class PostService {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  async findAllByCategory(category) {
+    const result = await PostModel.find({ categories: { $in: [category] } }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   async findOne(id) {
     const result = await PostModel.findById({ _id: ObjectId(id) }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findOneBySlug(slug) {
+    console.log(slug);
+    const result = await PostModel.findOne({ slug }).exec();
     return result;
   }
 
@@ -108,15 +121,15 @@ class PostService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async checkIfTitleExist(title) {
-    const query = PostModel.count({ title });
+  async checkIfTitleExist(slug) {
+    const query = PostModel.count({ slug });
     const count = await query.exec();
     return count > 0;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async checkIfTitleExistButNotId(title, id) {
-    const query = PostModel.count({ title, _id: { $ne: ObjectId(id) } });
+  async checkIfTitleExistButNotId(slug, id) {
+    const query = PostModel.count({ slug, _id: { $ne: ObjectId(id) } });
     const count = await query.exec();
     return count > 0;
   }

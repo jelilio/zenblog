@@ -129,6 +129,19 @@ module.exports = ({ userService, avatarService }) => {
     }
   });
 
+  router.get('/:id/avatar', async (req, res) => {
+    const user = await userService.findOne(req.params.id);
+    res.type('png');
+    return res.sendFile(avatarService.filepath(user.avatar));
+  });
+
+  router.get('/:id/avatartn', async (req, res) => {
+    const user = await userService.findOne(req.params.id);
+    res.type('png');
+    const tn = await avatarService.thumbnail(user.avatar);
+    return res.end(tn, 'binary');
+  });
+
   router.get('/avatar/:filename', (req, res) => {
     res.type('png');
     return res.sendFile(avatarService.filepath(req.params.filename));

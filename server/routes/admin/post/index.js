@@ -123,7 +123,7 @@ module.exports = ({ categoryService, avatarService, postService }) => {
     const post = await postService.findOne(req.params.id);
     res.render('layout', {
       pageTitle: 'Posts',
-      template: 'admin/posts/preview',
+      template: 'blog/post',
       post,
       moment,
     });

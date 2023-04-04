@@ -3,19 +3,30 @@ const CategoryModel = require('../models/CategoryModel');
 
 class PostService {
   async create(name, description) {
-    if (await this.checkIfNameExist(name)) {
+    const slug = name
+      .trim()
+      .replace(/[^A-Z0-9]+/gi, '-')
+      .toLowerCase();
+
+    if (await this.checkIfNameExist(slug)) {
       throw new Error(`Category with similar name: ${name}, already exist`);
     }
 
     const model = new CategoryModel({
       name,
+      slug,
       description,
     });
     return model.save();
   }
 
   async update(id, name, description) {
-    if (await this.checkIfNameExistButNotId(name, id)) {
+    const slug = name
+      .trim()
+      .replace(/[^A-Z0-9]+/gi, '-')
+      .toLowerCase();
+
+    if (await this.checkIfNameExistButNotId(slug, id)) {
       throw new Error(`Category with similar name: ${name}, already exist`);
     }
     const category = await CategoryModel.findById(id);
@@ -24,6 +35,7 @@ class PostService {
     }
 
     category.name = name;
+    category.slug = slug;
     category.description = description;
 
     return category.save();
@@ -48,15 +60,15 @@ class PostService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async checkIfNameExist(name) {
-    const query = CategoryModel.count({ name });
+  async checkIfNameExist(slug) {
+    const query = CategoryModel.count({ slug });
     const count = await query.exec();
     return count > 0;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async checkIfNameExistButNotId(name, id) {
-    const query = CategoryModel.count({ name, _id: { $ne: ObjectId(id) } });
+  async checkIfNameExistButNotId(slug, id) {
+    const query = CategoryModel.count({ slug, _id: { $ne: ObjectId(id) } });
     const count = await query.exec();
     return count > 0;
   }
