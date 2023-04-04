@@ -8,22 +8,22 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const auth = require('./lib/auth');
-// const config = require('./config')[process.env.NODE_ENV || 'development'];
-// const db = require('./lib/db');
 
 const UserService = require('./services/UserService');
 const AvatarService = require('./services/AvatarService');
 const CategoryService = require('./services/CategoryService');
 const PostService = require('./services/PostService');
+const CommentService = require('./services/CommentService');
 
 module.exports = (config) => {
   const app = express();
-  const userService = new UserService();
+
+  // initialize different services which contain the application and database logic
+  const userService = new UserService(); // users related services
   const avatarService = new AvatarService(config.data.avatars);
   const categoryService = new CategoryService();
   const postService = new PostService();
-
-  // const port = 3001;
+  const commentService = new CommentService();
 
   app.set('trust proxy', 1);
 
@@ -34,7 +34,7 @@ module.exports = (config) => {
     })
   );
 
-  app.set('view engine', 'ejs');
+  app.set('view engine', 'ejs'); // using ejs as the view
   app.set('views', path.join(__dirname, './views'));
 
   app.locals.title = config.sitename;
@@ -56,21 +56,13 @@ module.exports = (config) => {
 
   app.use(auth.initialize);
   app.use(auth.session);
-  app.use(auth.setUser);
+  app.use(auth.setUser); // Inject the logged-user on local variable
 
-  app.use('/', routes({ userService, avatarService, categoryService, postService }));
-
-  // app.get('/', (request, response) => {
-  //   response.render('pages/index', { pageTitle: 'Welcome' });
-  // });
-
-  // db.connect(config.database.dsn).then(() => {
-  //   console.log('connected to Mongodb');
-  // });
-
-  // app.listen(port, () => {
-  //   console.log(`ZenBlog with Express is running on port: ${port}!`);
-  // });
+  // declare the applicaiton's routes
+  app.use(
+    '/',
+    routes({ userService, avatarService, categoryService, postService, commentService })
+  );
 
   return app;
 };

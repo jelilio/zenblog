@@ -5,7 +5,7 @@ const middlewares = require('../../middlewares');
 
 const router = express.Router();
 
-module.exports = ({ categoryService, avatarService, postService }) => {
+module.exports = ({ categoryService, avatarService, postService, commentService }) => {
   router.get('/', async (req, res) => {
     const result = await postService.findAll();
     res.render('layout', {
@@ -121,11 +121,14 @@ module.exports = ({ categoryService, avatarService, postService }) => {
 
   router.get('/:id/preview', async (req, res) => {
     const post = await postService.findOne(req.params.id);
+    const comments = await commentService.findAllByPost(post.id);
+
     res.render('layout', {
       pageTitle: 'Posts',
       template: 'blog/post',
       post,
       moment,
+      comments,
     });
   });
 

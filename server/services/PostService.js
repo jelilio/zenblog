@@ -109,7 +109,6 @@ class PostService {
 
   // eslint-disable-next-line class-methods-use-this
   async findOneBySlug(slug) {
-    console.log(slug);
     const result = await PostModel.findOne({ slug }).exec();
     return result;
   }
