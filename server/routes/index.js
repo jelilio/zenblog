@@ -1,4 +1,5 @@
 const express = require('express');
+const moment = require('moment');
 
 const aboutRoute = require('./about');
 const contactRoute = require('./contact');
@@ -10,16 +11,34 @@ const postsRoute = require('./posts');
 const router = express.Router();
 
 module.exports = (params) => {
-  const { categoryService } = params;
+  const { categoryService, postService } = params;
 
   router.use('/', async (req, res, next) => {
     const categories = await categoryService.findAll();
+    const postsTop4 = await postService.findTop(4);
     res.locals.headerCategories = categories;
+    res.locals.footerPosts = postsTop4;
     return next();
   });
 
-  router.get('/', (request, response) => {
-    response.render('layout', { pageTitle: 'Welcome', template: 'index' });
+  router.get('/', async (request, response) => {
+    const postsTop10 = await postService.findTop(10);
+    const [featurePost] = postsTop10;
+
+    const middleIndex = Math.ceil(postsTop10.length / 2);
+
+    const firstHalfPosts = postsTop10.slice().splice(0, middleIndex);
+    const secondHalfPosts = postsTop10.slice().splice(-middleIndex);
+
+    response.render('layout', {
+      pageTitle: 'Welcome',
+      template: 'index',
+      postsTop10,
+      featurePost,
+      firstHalfPosts,
+      secondHalfPosts,
+      moment,
+    });
   });
 
   router.use('/about', aboutRoute());
@@ -33,16 +52,6 @@ module.exports = (params) => {
     req.logOut(() => {});
     return res.redirect('/');
   });
-
-  router.get(
-    '/profile',
-    (req, res, next) => {
-      if (req.user) return next();
-      return res.status(403).end();
-    },
-    (req, res) =>
-      res.render('layout', { pageTitle: 'Profile', template: 'profile', user: req.user })
-  );
 
   return router;
 };

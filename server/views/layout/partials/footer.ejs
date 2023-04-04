@@ -6,9 +6,11 @@
         <div class="col-lg-4">
           <h3 class="footer-heading">About ZenBlog</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ab, perspiciatis beatae
-            autem deleniti voluptate nulla a dolores, exercitationem eveniet libero laudantium
-            recusandae officiis qui aliquid blanditiis omnis quae. Explicabo?
+            ZenBlog is a family-owned online magazine based in Dundalk, Ireland. We take great pride
+            in the craft of fine jewelry design, creation and restoration. Whether we are creating a
+            bespoke engagement ring, restoring a family heirloom, or showcasing our vast collection,
+            we put our customers’ needs first and strive to forge personalized relationships to
+            create and maintain heirloom pieces for life.
           </p>
           <p><a href="/about" class="footer-link-more">Learn More</a></p>
         </div>
@@ -70,59 +72,23 @@
           <h3 class="footer-heading">Recent Posts</h3>
 
           <ul class="footer-links footer-blog-entry list-unstyled">
+            <% footerPosts.forEach(function(post, i){ %>
             <li>
-              <a href="single-post.html" class="d-flex align-items-center">
-                <img src="/assets/img/post-sq-1.jpg" alt="" class="img-fluid me-3" />
+              <a href="/posts/<%= post.slug %>" class="d-flex align-items-center">
+                <img src="/posts/<%= post.slug %>/feature-image" alt="" class="img-fluid me-3" />
                 <div>
                   <div class="post-meta d-block">
-                    <span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                    <span>Jul 5th '22</span>
+                    <% if(post.categories.length > 0) { %>
+                    <span class="date"> <%= post.categories[0] %> </span>
+                    <% } %>
+                    <span class="mx-1">&bullet;</span>
+                    <span><%= moment(post.publishedDate).format("MMM Do 'YY"); %></span>
                   </div>
-                  <span>5 Great Startup Tips for Female Founders</span>
+                  <span><%= post.title %></span>
                 </div>
               </a>
             </li>
-
-            <li>
-              <a href="single-post.html" class="d-flex align-items-center">
-                <img src="/assets/img/post-sq-2.jpg" alt="" class="img-fluid me-3" />
-                <div>
-                  <div class="post-meta d-block">
-                    <span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                    <span>Jul 5th '22</span>
-                  </div>
-                  <span
-                    >What is the son of Football Coach John Gruden, Deuce Gruden doing Now?</span
-                  >
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="single-post.html" class="d-flex align-items-center">
-                <img src="/assets/img/post-sq-3.jpg" alt="" class="img-fluid me-3" />
-                <div>
-                  <div class="post-meta d-block">
-                    <span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                    <span>Jul 5th '22</span>
-                  </div>
-                  <span>Life Insurance And Pregnancy: A Working Mom’s Guide</span>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="single-post.html" class="d-flex align-items-center">
-                <img src="/assets/img/post-sq-4.jpg" alt="" class="img-fluid me-3" />
-                <div>
-                  <div class="post-meta d-block">
-                    <span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                    <span>Jul 5th '22</span>
-                  </div>
-                  <span>How to Avoid Distraction and Stay Focused During Video Calls?</span>
-                </div>
-              </a>
-            </li>
+            <% }); %>
           </ul>
         </div>
       </div>

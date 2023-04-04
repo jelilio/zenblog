@@ -91,13 +91,21 @@ class PostService {
 
   // eslint-disable-next-line class-methods-use-this
   async findAll() {
-    const result = await PostModel.find({}).exec();
+    const result = await PostModel.find({}).sort({ createdAt: 1 }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findTop(top) {
+    const result = await PostModel.find({}).sort({ createdAt: 1 }).limit(top).exec();
     return result;
   }
 
   // eslint-disable-next-line class-methods-use-this
   async findAllByCategory(category) {
-    const result = await PostModel.find({ categories: { $in: [category] } }).exec();
+    const result = await PostModel.find({ categories: { $in: [category] } })
+      .sort({ createdAt: 1 })
+      .exec();
     return result;
   }
 
