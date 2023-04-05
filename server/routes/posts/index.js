@@ -1,5 +1,6 @@
 const express = require('express');
 const moment = require('moment');
+const request = require('request');
 
 const router = express.Router();
 
@@ -26,8 +27,22 @@ module.exports = ({ postService, avatarService, commentService }) => {
 
   router.get('/:slug/feature-image', async (req, res) => {
     const post = await postService.findOneBySlug(req.params.slug);
-    res.type('png');
-    return res.sendFile(avatarService.filepath(post.featureImage));
+    const url = post.featureImage;
+
+    request(
+      {
+        url,
+        encoding: null,
+      },
+      (err, resp) => {
+        if (!err && resp.statusCode === 200) {
+          res.set('Content-Type', 'image/jpeg');
+          res.send(resp.body);
+        } else {
+          res.end();
+        }
+      }
+    );
   });
 
   router.post('/:slug/comment', restrictNonUser, async (req, res) => {

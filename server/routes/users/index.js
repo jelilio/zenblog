@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const middlewares = require('../middlewares');
+const request = require('request');
 
 const router = express.Router();
 
@@ -131,26 +132,25 @@ module.exports = ({ userService, avatarService }) => {
 
   router.get('/:id/avatar', async (req, res) => {
     const user = await userService.findOne(req.params.id);
-    res.type('png');
-    return res.sendFile(avatarService.filepath(user.avatar));
+    const url = user.avatar;
+    request(
+      {
+        url,
+        encoding: null,
+      },
+      (err, resp) => {
+        if (!err && resp.statusCode === 200) {
+          res.set('Content-Type', 'image/jpeg');
+          res.send(resp.body);
+        } else {
+          res.end();
+        }
+      }
+    );
   });
 
   router.get('/:id/avatartn', async (req, res) => {
-    const user = await userService.findOne(req.params.id);
-    res.type('png');
-    const tn = await avatarService.thumbnail(user.avatar);
-    return res.end(tn, 'binary');
-  });
-
-  router.get('/avatar/:filename', (req, res) => {
-    res.type('png');
-    return res.sendFile(avatarService.filepath(req.params.filename));
-  });
-
-  router.get('/avatartn/:filename', async (req, res) => {
-    res.type('png');
-    const tn = await avatarService.thumbnail(req.params.filename);
-    return res.end(tn, 'binary');
+    res.redirect(`/users/${req.params.id}/avatar`);
   });
 
   return router;

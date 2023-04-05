@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const auth = require('./lib/auth');
+const cloudinary = require('./lib/cloudinary');
 
 const UserService = require('./services/UserService');
 const AvatarService = require('./services/AvatarService');
@@ -18,9 +19,11 @@ const CommentService = require('./services/CommentService');
 module.exports = (config) => {
   const app = express();
 
+  const instance = cloudinary.setup(config.cloudinary);
+
   // initialize different services which contain the application and database logic
   const userService = new UserService(); // users related services
-  const avatarService = new AvatarService(config.data.avatars);
+  const avatarService = new AvatarService(config.data.avatars, instance);
   const categoryService = new CategoryService();
   const postService = new PostService();
   const commentService = new CommentService();

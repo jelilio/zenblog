@@ -18,6 +18,7 @@ module.exports = (params) => {
     const postsTop4 = await postService.findTop(4);
     res.locals.headerCategories = categories;
     res.locals.footerPosts = postsTop4;
+    res.locals.moment = moment;
     return next();
   });
 
