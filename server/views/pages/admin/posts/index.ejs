@@ -30,7 +30,7 @@
         <td><%= post.categories %></td>
         <td>
           <% if(post.published) { %> Published
-          <p><%= moment(post.updatedAt).format('dd MMM YY hh:mm'); %></p>
+          <p><%= moment(post.updatedAt).format('DD MMM YY hh:mm'); %></p>
           <% } else { %> Last Modified
           <p><%= moment(post.updatedAt).format('DD MMM YY hh:mm'); %></p>
           <% } %>

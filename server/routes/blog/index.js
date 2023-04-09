@@ -6,8 +6,14 @@ const router = express.Router();
 module.exports = (params) => {
   const { postService } = params;
 
-  router.get('/', (request, response) => {
-    response.render('layout', { pageTitle: 'Contact', template: 'contact' });
+  router.get('/', async (request, response) => {
+    const posts = await postService.findAll();
+    response.render('layout', {
+      pageTitle: `Blog`,
+      template: 'blog/posts',
+      posts,
+      moment,
+    });
   });
 
   router.get('/:name', async (request, response) => {

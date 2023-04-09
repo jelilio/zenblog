@@ -7,10 +7,11 @@ class PostService {
     title,
     subtitle,
     body,
-    author,
+    editor,
     featureImage,
     featureImageCaption,
     publish,
+    hide,
     categories,
     tags
   ) {
@@ -33,10 +34,11 @@ class PostService {
       slug,
       subtitle,
       body,
-      author,
+      editor,
       featureImage,
       featureImageCaption,
       published,
+      hidden: hide,
       publishedDate,
       categories,
       tags,
@@ -54,6 +56,7 @@ class PostService {
     featureImage,
     featureImageCaption,
     publish,
+    hide,
     categories,
     tags
   ) {
@@ -70,7 +73,7 @@ class PostService {
 
     if (!post.publish && publish) {
       post.published = true;
-      post.publishedDate = Date.now;
+      post.publishedDate = Date.now();
     }
 
     if (featureImage) {
@@ -82,6 +85,7 @@ class PostService {
     post.subtitle = subtitle;
     post.body = body;
     post.author = author;
+    post.hidden = hide;
     post.categories = categories;
     post.featureImageCaption = featureImageCaption;
     post.tags = tags;
@@ -104,6 +108,14 @@ class PostService {
   // eslint-disable-next-line class-methods-use-this
   async findAllByCategory(category) {
     const result = await PostModel.find({ categories: { $in: [category] } })
+      .sort({ createdAt: 1 })
+      .exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findAllByEmail(email) {
+    const result = await PostModel.find({ email: { $eq: email } })
       .sort({ createdAt: 1 })
       .exec();
     return result;

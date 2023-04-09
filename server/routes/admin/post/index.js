@@ -51,7 +51,8 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
           author,
           featureImage,
           req.body.featureImageCaption,
-          false,
+          req.body.publish,
+          req.body.hide,
           req.body.categories,
           []
         );
@@ -93,6 +94,8 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
           featureImage = req.file.storedFilename;
         }
 
+        console.log('hide: ' + req.body.hide);
+
         const author = {
           id: req.user.id,
           name: req.user.name,
@@ -106,7 +109,8 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
           author,
           featureImage,
           req.body.featureImageCaption,
-          false,
+          req.body.publish,
+          req.body.hide,
           req.body.categories,
           []
         );

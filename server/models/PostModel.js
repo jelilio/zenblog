@@ -29,6 +29,11 @@ const PostSchema = mongoose.Schema(
       name: String,
       email: String,
     },
+    editor: {
+      id: String,
+      name: String,
+      email: String,
+    },
     body: {
       type: String,
       required: true,
@@ -37,6 +42,7 @@ const PostSchema = mongoose.Schema(
     meta: {
       votes: Number,
       favs: Number,
+      vists: Number,
     },
     featureImage: {
       type: String,
@@ -57,7 +63,7 @@ const PostSchema = mongoose.Schema(
         },
       },
     ],
-    hidden: Boolean,
+    hidden: { type: Boolean, default: false },
     published: { type: Boolean, default: false },
     publishedDate: Date,
     categories: {

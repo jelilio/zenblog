@@ -90,6 +90,23 @@
         </select>
       </div>
     </div>
+    <% if(formData.published) { %>
+    <div class="mb-3 row">
+      <div class="col-sm-10 offset-sm-2">
+        <input class="form-check-input" type="checkbox" name="hide" value="true"
+        id="flexCheckChecked" <%= formData.hidden? 'checked' : '' %> />
+        <label class="form-check-label" for="flexCheckChecked"> Hide </label>
+      </div>
+    </div>
+    <% } else { %>
+    <div class="mb-3 row">
+      <div class="col-sm-10 offset-sm-2">
+        <input class="form-check-input" type="checkbox" name="publish" value="true"
+        id="flexCheckChecked" <%= formData.published? 'checked' : '' %> />
+        <label class="form-check-label" for="flexCheckChecked"> Publish </label>
+      </div>
+    </div>
+    <% } %>
     <div class="col-12">
       <input type="submit" class="btn btn-primary" value="Submit" />
     </div>

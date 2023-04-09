@@ -11,7 +11,7 @@ const restrictNonUser = async (req, res, next) => {
   return res.status(403).end();
 };
 
-module.exports = ({ postService, avatarService, commentService }) => {
+module.exports = ({ postService, commentService }) => {
   router.get('/:slug', async (req, res) => {
     const post = await postService.findOneBySlug(req.params.slug);
     const comments = await commentService.findAllByPost(post.id);

@@ -59,7 +59,15 @@ class UserService {
 
   // eslint-disable-next-line class-methods-use-this
   async findAll() {
-    const result = await UserModel.find({}).exec();
+    const result = await UserModel.find({}).sort({ createdAt: 1 }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findAllByEmail(email) {
+    const result = await UserModel.find({ email: { $eq: email } })
+      .sort({ createdAt: 1 })
+      .exec();
     return result;
   }
 

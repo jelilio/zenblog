@@ -14,12 +14,18 @@ const renderCreateUser = (req, res, pageTitle, success, errMessage, formData) =>
 
 module.exports = ({ userService }) => {
   router.get('/', async (req, res) => {
-    const result = await userService.findAll();
+    const { searchEmail } = req.query;
+
+    const result = searchEmail
+      ? await userService.findAllByEmail(searchEmail)
+      : await userService.findAll();
+
     res.render('layout', {
       pageTitle: 'Users',
       templates: ['admin/index', 'admin/users/index'],
       template: 'admin/index',
       users: result,
+      searchEmail,
     });
   });
 
