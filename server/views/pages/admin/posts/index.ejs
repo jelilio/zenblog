@@ -29,16 +29,16 @@
         <td><%= post.author.name %></td>
         <td><%= post.categories %></td>
         <td>
-          <% if(post.published) { %> Published
+          <% if(post.published) { %> Published <%= post.hidden? '(Hidden)' : '' %>
           <p><%= moment(post.updatedAt).format('DD MMM YY hh:mm'); %></p>
           <% } else { %> Last Modified
           <p><%= moment(post.updatedAt).format('DD MMM YY hh:mm'); %></p>
           <% } %>
         </td>
         <td>
-          <a href="/admin/posts/<%= post.id %>/edit">Edit</a>
-          <a href="/admin/posts/<%= post.id %>/preview" target="_blank">Preview</a>
-          <a href="/admin/posts/<%= post.id %>/delete">Delete</a>
+          <a href="/admin/posts/<%= post.slug %>/edit">Edit</a>
+          <a href="/admin/posts/<%= post.slug %>/preview" target="_blank">Preview</a>
+          <a href="/admin/posts/<%= post.slug %>/delete">Delete</a>
         </td>
       </tr>
       <% }); %>

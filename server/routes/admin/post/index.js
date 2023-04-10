@@ -6,8 +6,19 @@ const middlewares = require('../../middlewares');
 const router = express.Router();
 
 module.exports = ({ categoryService, avatarService, postService, commentService }) => {
+  const checkIfPostExist = async (req, res, next) => {
+    const post = await postService.findOneBySlugAdmin(req.params.slug);
+    if (!post) {
+      const error = Error('Post not found');
+      error.status = 404;
+      return next(error);
+    }
+    res.locals.post = post;
+    return next();
+  };
+
   router.get('/', async (req, res) => {
-    const result = await postService.findAll();
+    const result = await postService.findAllAdmin();
     res.render('layout', {
       pageTitle: 'Posts',
       templates: ['admin/index', 'admin/posts/index'],
@@ -65,13 +76,14 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
     }
   );
 
-  router.get('/:id/delete', async (req, res) => {
-    await postService.deleteOne(req.params.id);
+  router.get('/:slug/delete', checkIfPostExist, async (req, res) => {
+    const { post } = res.locals;
+    await postService.deleteOne(post.id);
     return res.redirect('/admin/posts');
   });
 
-  router.get('/:id/edit', async (req, res) => {
-    const post = await postService.findOne(req.params.id);
+  router.get('/:slug/edit', checkIfPostExist, async (req, res) => {
+    const { post } = res.locals;
     const categories = await categoryService.findAll();
 
     return res.render('layout', {
@@ -84,17 +96,18 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
   });
 
   router.post(
-    '/:id/edit',
+    '/:slug/edit',
+    checkIfPostExist,
     middlewares.upload.single('featureImage'),
     middlewares.handleFeatureImage(avatarService),
     async (req, res) => {
       try {
+        const { post } = res.locals;
+
         let featureImage;
         if (req.file && req.file.storedFilename) {
           featureImage = req.file.storedFilename;
         }
-
-        console.log('hide: ' + req.body.hide);
 
         const author = {
           id: req.user.id,
@@ -102,7 +115,7 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
           email: req.user.email,
         };
         const savedPost = await postService.update(
-          req.params.id,
+          post.id,
           req.body.title,
           req.body.subtitle,
           req.body.body,
@@ -123,8 +136,8 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
     }
   );
 
-  router.get('/:id/preview', async (req, res) => {
-    const post = await postService.findOne(req.params.id);
+  router.get('/:slug/preview', checkIfPostExist, async (req, res) => {
+    const { post } = res.locals;
     const comments = await commentService.findAllByPost(post.id);
 
     res.render('layout', {

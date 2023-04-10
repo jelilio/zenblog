@@ -26,7 +26,7 @@ class PostService {
 
     if (publish) {
       published = true;
-      publishedDate = Date.now;
+      publishedDate = Date.now();
     }
 
     const model = new PostModel({
@@ -95,27 +95,34 @@ class PostService {
 
   // eslint-disable-next-line class-methods-use-this
   async findAll() {
-    const result = await PostModel.find({}).sort({ createdAt: 1 }).exec();
-    return result;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async findTop(top) {
-    const result = await PostModel.find({}).sort({ createdAt: 1 }).limit(top).exec();
-    return result;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async findAllByCategory(category) {
-    const result = await PostModel.find({ categories: { $in: [category] } })
+    const result = await PostModel.find({ published: true, hidden: { $ne: true } })
       .sort({ createdAt: 1 })
       .exec();
     return result;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async findAllByEmail(email) {
-    const result = await PostModel.find({ email: { $eq: email } })
+  async findAllAdmin() {
+    const result = await PostModel.find({}).sort({ createdAt: 1 }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findTop(top) {
+    const result = await PostModel.find({ published: true, hidden: { $ne: true } })
+      .sort({ createdAt: 1 })
+      .limit(top)
+      .exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findAllByCategory(category) {
+    const result = await PostModel.find({
+      published: true,
+      hidden: { $ne: true },
+      categories: { $in: [category] },
+    })
       .sort({ createdAt: 1 })
       .exec();
     return result;
@@ -129,6 +136,12 @@ class PostService {
 
   // eslint-disable-next-line class-methods-use-this
   async findOneBySlug(slug) {
+    const result = await PostModel.findOne({ published: true, hidden: { $ne: true }, slug }).exec();
+    return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findOneBySlugAdmin(slug) {
     const result = await PostModel.findOne({ slug }).exec();
     return result;
   }

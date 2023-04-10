@@ -12,11 +12,16 @@ const restrictNonUser = async (req, res, next) => {
 };
 
 module.exports = ({ postService, commentService }) => {
-  router.get('/:slug', async (req, res) => {
+  router.get('/:slug', async (req, res, next) => {
     const post = await postService.findOneBySlug(req.params.slug);
+    if (!post) {
+      const error = Error('Post not found');
+      error.status = 404;
+      return next(error);
+    }
     const comments = await commentService.findAllByPost(post.id);
 
-    res.render('layout', {
+    return res.render('layout', {
       pageTitle: `${post.title}`,
       template: 'blog/post',
       post,
@@ -25,11 +30,16 @@ module.exports = ({ postService, commentService }) => {
     });
   });
 
-  router.get('/:slug/feature-image', async (req, res) => {
+  router.get('/:slug/feature-image', async (req, res, next) => {
     const post = await postService.findOneBySlug(req.params.slug);
+    if (!post) {
+      const error = Error('Post not found');
+      error.status = 404;
+      return next(error);
+    }
     const url = post.featureImage;
 
-    request(
+    return request(
       {
         url,
         encoding: null,
@@ -45,8 +55,13 @@ module.exports = ({ postService, commentService }) => {
     );
   });
 
-  router.post('/:slug/comment', restrictNonUser, async (req, res) => {
+  router.post('/:slug/comment', restrictNonUser, async (req, res, next) => {
     const post = await postService.findOneBySlug(req.params.slug);
+    if (!post) {
+      const error = Error('Post not found');
+      error.status = 404;
+      return next(error);
+    }
     const { message } = req.body;
 
     try {
