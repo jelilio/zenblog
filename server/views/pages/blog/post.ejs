@@ -14,7 +14,21 @@
               <span class="mx-1">&bullet;</span>
               <span><%= moment(post.publishedDate).format("MMM Do 'YY"); %></span>
             </div>
-            <h1 class="mb-5"><%= post.title %></h1>
+            <h1 class="mb-3"><%= post.title %></h1>
+            <div class="d-flex align-items-center author mb-3">
+              <div class="photo">
+                <img
+                  src="/users/<%= post.author.id %>/avatartn"
+                  alt="author avatar"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="name">
+                <h3 class="m-0 p-0"><%= post.author.name %></h3>
+                <span><%= moment(post.publishedDate).format("MMM Do 'YY hh:mm A"); %></span>
+              </div>
+            </div>
+            <hr />
 
             <% post.body.split(/\r?\n/).forEach(function(line, i){ %> <% if(i==0) { let firstChar =
             Array.from(line)[0]; %>
