@@ -20,7 +20,13 @@
             Array.from(line)[0]; %>
             <p><span class="firstcharacter"><%= firstChar %></span><%= line.substring(1) %></p>
             <figure class="my-4">
-              <img src="/posts/<%= post.slug %>/feature-image" alt="" class="img-fluid" />
+              <img
+                src="/posts/<%= post.slug %>/feature-image"
+                alt="<%= post.featureImageCaption %>"
+                class="img-fluid"
+                width="900"
+                height="500"
+              />
               <figcaption class="text-center font-italic">
                 <%= post.featureImageCaption %>
               </figcaption>

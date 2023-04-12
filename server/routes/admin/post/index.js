@@ -140,11 +140,20 @@ module.exports = ({ categoryService, avatarService, postService, commentService 
     const { post } = res.locals;
     const comments = await commentService.findAllByPost(post.id);
 
+    const postsTop10 = await postService.findTop(10);
+
+    const middleIndex = Math.ceil(postsTop10.length / 2);
+
+    const latestPosts = postsTop10.slice().splice(0, middleIndex);
+    const popularPosts = postsTop10.slice().splice(-middleIndex);
+
     res.render('layout', {
       pageTitle: 'Posts',
       template: 'blog/post',
       post,
       moment,
+      popularPosts,
+      latestPosts,
       comments,
     });
   });
