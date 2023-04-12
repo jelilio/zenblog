@@ -7,7 +7,7 @@ class PostService {
     title,
     subtitle,
     body,
-    editor,
+    author,
     featureImage,
     featureImageCaption,
     publish,
@@ -34,7 +34,7 @@ class PostService {
       slug,
       subtitle,
       body,
-      editor,
+      author,
       featureImage,
       featureImageCaption,
       published,
@@ -52,7 +52,7 @@ class PostService {
     title,
     subtitle,
     body,
-    author,
+    editor,
     featureImage,
     featureImageCaption,
     publish,
@@ -84,7 +84,7 @@ class PostService {
     post.slug = slug;
     post.subtitle = subtitle;
     post.body = body;
-    post.author = author;
+    post.editor = editor;
     post.hidden = hide;
     post.categories = categories;
     post.featureImageCaption = featureImageCaption;
