@@ -21,11 +21,20 @@ module.exports = ({ postService, commentService }) => {
     }
     const comments = await commentService.findAllByPost(post.id);
 
+    const postsTop10 = await postService.findTop(10);
+
+    const middleIndex = Math.ceil(postsTop10.length / 2);
+
+    const latestPosts = postsTop10.slice().splice(0, middleIndex);
+    const popularPosts = postsTop10.slice().splice(-middleIndex);
+
     return res.render('layout', {
       pageTitle: `${post.title}`,
       template: 'blog/post',
       post,
       moment,
+      popularPosts,
+      latestPosts,
       comments,
     });
   });
