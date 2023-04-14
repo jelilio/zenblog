@@ -8,11 +8,20 @@ module.exports = (params) => {
 
   router.get('/', async (request, response) => {
     const posts = await postService.findAll();
+    const postsTop10 = await postService.findTop(10);
+
+    const middleIndex = Math.ceil(postsTop10.length / 2);
+
+    const latestPosts = postsTop10.slice().splice(0, middleIndex);
+    const popularPosts = postsTop10.slice().splice(-middleIndex);
+
     response.render('layout', {
       pageTitle: `Blog`,
       template: 'blog/posts',
       posts,
       moment,
+      popularPosts,
+      latestPosts,
     });
   });
 
