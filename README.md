@@ -1,6 +1,8 @@
 # ZenBlog - Node, Express and MongoDB
 
-A simple news blog with content management functionalities developed using Node, Express and MongoDB.
+A news blog with content management functionalities developed using Node, Express and MongoDB.
+
+<img src="zenblog.png" alt="drawing" style="width:100%;height:300px"/>
 
 ## Table of Contents
 
