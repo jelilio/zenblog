@@ -32,17 +32,12 @@ class AvatarService {
     try {
       await this.cloudinary.uploader.upload(buffer.path, { public_id: filename });
 
-      // Generate
-      const url = this.cloudinary.url(filename, {
+      return this.cloudinary.url(filename, {
         width: 300,
         height: 300,
         crop: 'fit',
       });
-
-      console.log(url);
-      return url;
     } catch (err) {
-      console.log(err.message);
       return null;
     }
   }
@@ -61,33 +56,12 @@ class AvatarService {
   }
 
   async storeFeatureImage(buffer) {
-    // Upload
-
     const filename = AvatarService.filenameOnly();
-    console.log(filename);
 
     try {
       const res = await this.cloudinary.uploader.upload(buffer.path, { public_id: filename });
-
-      console.log('after upload');
-      console.log(res);
-
-      // res
-      //   .then((data) => {
-      //     console.log(data);
-      //     console.log(data.secure_url);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
-      // Generate
-      // const url = this.cloudinary.url(filename);
-
-      console.log(res.url);
       return res.url;
     } catch (err) {
-      console.log(err.message);
       return null;
     }
   }

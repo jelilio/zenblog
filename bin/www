@@ -40,7 +40,6 @@ const server = http.createServer(app);
 
 db.connect(config.database.dsn)
   .then(() => {
-    console.log('Connected to MongoDB');
     server.listen(port);
   })
   .catch((err) => {
