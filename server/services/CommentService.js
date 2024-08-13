@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongoose').Types;
 const CommentModel = require('../models/CommentModel');
 
-class PostService {
+class CommentService {
   // eslint-disable-next-line class-methods-use-this
   async create(message, author, postId) {
     const model = new CommentModel({
@@ -13,15 +13,13 @@ class PostService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async update(id, message, author, postId) {
+  async update(id, message) {
     const comment = await CommentModel.findById(id);
     if (!comment) {
       throw new Error('Comment not found');
     }
 
     comment.message = message;
-    comment.author = author;
-    comment.postId = postId;
 
     return comment.save();
   }
@@ -51,4 +49,4 @@ class PostService {
   }
 }
 
-module.exports = PostService;
+module.exports = CommentService;

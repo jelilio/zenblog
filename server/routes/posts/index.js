@@ -88,5 +88,37 @@ module.exports = ({ postService, commentService }) => {
     }
   });
 
+  router.post('/:slug/comment/:id', restrictNonUser, async (req, res, next) => {
+    const post = await postService.findOneBySlug(req.params.slug);
+    const comment = await commentService.findOne(req.params.id);
+
+    if (!post) {
+      const error = Error('Post not found');
+      error.status = 404;
+      return next(error);
+    }
+    if (!comment) {
+      const error = Error('Comment not found');
+      error.status = 404;
+      return next(error);
+    }
+    if (comment.author.id !== req.user.id) {
+      const error = Error('Cannot edit someone else comment');
+      error.status = 401;
+      return next(error);
+    }
+
+    const { message } = req.body;
+
+    try {
+      const updatedComment = await commentService.update(req.params.id, message);
+      if (updatedComment) return res.redirect(`/posts/${req.params.slug}?success=true`);
+
+      throw new Error('Unable to update comment');
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  });
+
   return router;
 };
