@@ -1,6 +1,6 @@
 const express = require('express');
 const moment = require('moment');
-const request = require('request');
+const fetch = require('node-fetch');
 
 const router = express.Router();
 
@@ -47,21 +47,15 @@ module.exports = ({ postService, commentService }) => {
       return next(error);
     }
     const url = post.featureImage;
-
-    return request(
-      {
-        url,
-        encoding: null,
-      },
-      (err, resp) => {
-        if (!err && resp.statusCode === 200) {
-          res.set('Content-Type', 'image/jpeg');
-          res.send(resp.body);
-        } else {
-          res.end();
-        }
-      }
-    );
+    return fetch(url)
+      .then((suc) => suc.buffer())
+      .then((image) => {
+        res.set('Content-Type', 'image/jpeg');
+        res.end(image);
+      })
+      .catch(() => {
+        res.end();
+      });
   });
 
   router.post('/:slug/comment', restrictNonUser, async (req, res, next) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
+const fetch = require('node-fetch');
 const middlewares = require('../middlewares');
-const request = require('request');
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ const redirectIfLoggedIn = (req, res, next) => {
 };
 
 module.exports = ({ userService, avatarService }) => {
-  router.get('/', (request, response) => response.redirect('/users/login'));
+  router.get('/', (_, res) => res.redirect('/users/login'));
 
   router.get(
     '/profile',
@@ -94,11 +94,11 @@ module.exports = ({ userService, avatarService }) => {
     }
   );
 
-  router.get('/login', redirectIfLoggedIn, (request, response) => {
-    response.render('layout', {
+  router.get('/login', redirectIfLoggedIn, (req, res) => {
+    res.render('layout', {
       pageTitle: 'Login',
       template: 'users/login',
-      error: request.query.error,
+      error: req.query.error,
       formData: {},
     });
   });
@@ -111,8 +111,8 @@ module.exports = ({ userService, avatarService }) => {
     })
   );
 
-  router.get('/register', redirectIfLoggedIn, (request, response, next) => {
-    renderRegister(request, response, next, request.query.success);
+  router.get('/register', redirectIfLoggedIn, (req, res, next) => {
+    renderRegister(req, res, next, req.query.success);
   });
 
   router.post('/register', async (req, res, next) => {
@@ -133,20 +133,15 @@ module.exports = ({ userService, avatarService }) => {
   router.get('/:id/avatar', async (req, res) => {
     const user = await userService.findOne(req.params.id);
     const url = user.avatar;
-    request(
-      {
-        url,
-        encoding: null,
-      },
-      (err, resp) => {
-        if (!err && resp.statusCode === 200) {
-          res.set('Content-Type', 'image/jpeg');
-          res.send(resp.body);
-        } else {
-          res.end();
-        }
-      }
-    );
+    return fetch(url)
+      .then((suc) => suc.buffer())
+      .then((image) => {
+        res.set('Content-Type', 'image/jpeg');
+        res.end(image);
+      })
+      .catch((err) => {
+        res.end(err);
+      });
   });
 
   router.get('/:id/avatartn', async (req, res) => {
